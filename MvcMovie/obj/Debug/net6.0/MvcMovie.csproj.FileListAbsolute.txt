@@ -28,3 +28,4 @@ C:\Users\wanja\OneDrive\Desktop\Work\Lab 4\MvcMovie\MvcMovie\obj\Debug\net6.0\re
 C:\Users\wanja\OneDrive\Desktop\Work\Lab 4\MvcMovie\MvcMovie\obj\Debug\net6.0\MvcMovie.pdb
 C:\Users\wanja\OneDrive\Desktop\Work\Lab 4\MvcMovie\MvcMovie\obj\Debug\net6.0\MvcMovie.genruntimeconfig.cache
 C:\Users\wanja\OneDrive\Desktop\Work\Lab 4\MvcMovie\MvcMovie\obj\Debug\net6.0\ref\MvcMovie.dll
+C:\Users\wanja\OneDrive\Desktop\Work\Lab 4\MvcMovie\MvcMovie\obj\Debug\net6.0\MvcMovie.sourcelink.json
