@@ -34,3 +34,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: IISWebAppDeploymentOnMachineGroup@0
+  inputs:
+    WebSiteName: 'MvcMovie'
+    VirtualApplication: 'MvcDeployment'
+    Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
