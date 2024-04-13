@@ -55,6 +55,7 @@ steps:
     azureSubscription: 'Azure for Students(5c0ee55f-76ea-4522-a407-22bcd3557be9)'
     appType: 'webApp'
     WebAppName: 'MvcMovies'
+    ResourceGroupName: 'DevOps'
     deployToSlotOrASE: true
     SlotName: 'production'
     packageForLinux: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
