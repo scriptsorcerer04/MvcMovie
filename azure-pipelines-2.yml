@@ -50,15 +50,6 @@ steps:
     replaceExistingArchive: true
 
 
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'Azure for Students(5c0ee55f-76ea-4522-a407-22bcd3557be9)'
-    appType: 'webApp'
-    appName: 'MvcMoviesDevOps'
-    package: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
-    deploymentMethod: 'zipDeploy'
-  
-
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -69,3 +60,4 @@ steps:
     deployToSlotOrASE: true
     SlotName: 'production'
     packageForLinux: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
+
