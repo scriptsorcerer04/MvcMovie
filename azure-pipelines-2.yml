@@ -42,6 +42,7 @@ steps:
   displayName: 'Download artifact'
   inputs:
     buildType: 'specific'
+    project: 'MVC Agile Process'
     pipeline: 'CI Pipeline'
     downloadType: 'single'
     artifactName: 'drop'
