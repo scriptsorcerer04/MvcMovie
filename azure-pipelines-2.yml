@@ -8,7 +8,10 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: Default
+  demands:
+  - Agent.Name -equals DESKTOP-86RQBBR
+
 
 variables:
   solution: '**/*.sln'
