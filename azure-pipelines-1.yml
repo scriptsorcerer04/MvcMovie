@@ -6,6 +6,11 @@
 trigger:
 - main
 
+pool:
+  name: Default
+  demands:
+  - Agent.Name -equals DESKTOP-86RQBBR
+  
 stages:
 - stage: Deploy
   jobs:
