@@ -48,5 +48,5 @@ stages:
 
     - task: IISWebAppDeploymentOnMachineGroup@0
       inputs:
-        WebSiteName: 'Mvc Movie'
-        Package: '$(System.ArtifactsDirectory)/**/*.zip'
+          WebSiteName: 'MovieApp'  # Replace with your actual app name
+          Package: '$(System.ArtifactsDirectory)\**\*.zip'
