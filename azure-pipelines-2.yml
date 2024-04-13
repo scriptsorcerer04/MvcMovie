@@ -15,7 +15,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
+# steps:
 # - task: NuGetToolInstaller@1
 
 # - task: NuGetCommand@2
@@ -38,15 +38,68 @@ steps:
 #     replaceExistingArchive: true
 
 
-- task: DownloadBuildArtifacts@0
-  displayName: 'Download artifact'
-  inputs:
-    buildType: 'specific'
-    project: 'MVC Agile Process'
-    pipeline: 'CI Pipeline'
-    downloadType: 'single'
-    artifactName: 'drop'
-    downloadPath: '$(System.ArtifactsDirectory)'
+# - task: DownloadBuildArtifacts@0
+#   displayName: 'Download artifact'
+#   inputs:
+#     buildType: 'specific'
+#     project: 'MVC Agile Process'
+#     pipeline: 'CI Pipeline'
+#     downloadType: 'single'
+#     artifactName: 'drop'
+#     downloadPath: '$(System.ArtifactsDirectory)'
+
+
+stages:
+- stage: DeployToDocker
+  displayName: 'Deploy to Docker'
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy Job'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download artifact'
+      inputs:
+        buildType: 'specific'
+        project: 'MVC Agile Process'
+        pipeline: 'CI Pipeline'     
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    - task: Docker@2
+      displayName: 'Build and push Docker image'
+      inputs:
+        containerRegistry: 'Docker Deployment' 
+        repository: 'scriptsorcerer04/mvc-movie' 
+        command: 'buildAndPush'
+        Dockerfile: |
+          FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+          WORKDIR /app
+          EXPOSE 80
+          
+          FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+          WORKDIR /src
+          COPY ["YourAspNetApp.csproj", "."]
+          RUN dotnet restore "YourAspNetApp.csproj"
+          COPY . .
+          WORKDIR "/src"
+          RUN dotnet build "YourAspNetApp.csproj" -c Release -o /app/build
+          
+          FROM build AS publish
+          RUN dotnet publish "YourAspNetApp.csproj" -c Release -o /app/publish
+          
+          FROM base AS final
+          WORKDIR /app
+          COPY --from=publish /app/publish .
+          ENTRYPOINT ["dotnet", "YourAspNetApp.dll"]
+        tags: |
+          $(Build.BuildNumber)
+
+    - script: echo 'Deployment of application zip to Docker has been succeeded'
+      displayName: 'Log deployment success message'
+
+
+
   
  
 
