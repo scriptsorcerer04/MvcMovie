@@ -4,13 +4,6 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 
-
-# pool:
-#   name: Default
-#   demands:
-#   - Agent.Name -equals DESKTOP-86RQBBR
-
-
 trigger:
 - main
 
@@ -23,41 +16,33 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+# - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
+# - task: NuGetCommand@2
+#   inputs:
+#     restoreSolution: '$(solution)'
+
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\app_publish"'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\app_publish'
+#     includeRootFolder: false
+#     archiveFile: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
+#     replaceExistingArchive: true
+
+
+- task: DownloadBuildArtifacts@0
+  displayName: 'Download artifact'
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\app_publish"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\app_publish'
-    includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
-    replaceExistingArchive: true
-
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure for Students(5c0ee55f-76ea-4522-a407-22bcd3557be9)'
-    appType: 'webApp'
-    WebAppName: 'MvcMoviesDevOps'
-    ResourceGroupName: 'DevOps'
-    deployToSlotOrASE: true
-    SlotName: 'production'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(System.ArtifactsDirectory)'
 
