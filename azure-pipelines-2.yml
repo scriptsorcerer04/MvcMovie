@@ -7,7 +7,10 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: Default
+  demands:
+  - Agent.Name -equals DESKTOP-86RQBBR
+
 
 variables:
   solution: '**/*.sln'
@@ -33,6 +36,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/app_publish'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/app_publish.zip'
+    replaceExistingArchive: true
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -41,4 +51,4 @@ steps:
     WebAppName: 'MvcMovies'
     deployToSlotOrASE: true
     SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/app_publish.zip'
