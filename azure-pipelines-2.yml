@@ -3,13 +3,16 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
-trigger:
-- main
+
 
 # pool:
 #   name: Default
 #   demands:
 #   - Agent.Name -equals DESKTOP-86RQBBR
+
+
+trigger:
+- main
 
 pool:
   vmImage: 'windows-latest'
@@ -29,7 +32,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)\app_publish"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -38,11 +41,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- script: |
+    mkdir $(Build.ArtifactStagingDirectory)\app_publish
+  displayName: 'Create app_publish directory'
+
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/app_publish'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\app_publish'
     includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)/app_publish.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
     replaceExistingArchive: true
 
 - task: AzureRmWebAppDeployment@4
@@ -53,4 +60,5 @@ steps:
     WebAppName: 'MvcMovies'
     deployToSlotOrASE: true
     SlotName: 'production'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/app_publish.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
+
