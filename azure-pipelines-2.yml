@@ -41,9 +41,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: |
-    mkdir $(Build.ArtifactStagingDirectory)\app_publish
-  displayName: 'Create app_publish directory'
 
 - task: ArchiveFiles@2
   inputs:
