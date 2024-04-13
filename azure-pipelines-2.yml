@@ -15,19 +15,35 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: DownloadBuildArtifacts@0
-  displayName: 'Download artifact'
-  inputs:
-    buildType: 'specific'
-    project: 'MVC Agile Process'
-    pipeline: 'CI Pipeline'
-    downloadType: 'single'
-    artifactName: 'drop'
-    downloadPath: '$(System.ArtifactsDirectory)'
+# steps:
+# - task: DownloadBuildArtifacts@0
+#   displayName: 'Download artifact'
+#   inputs:
+#     buildType: 'specific'
+#     project: 'MVC Agile Process'
+#     pipeline: 'CI Pipeline'
+#     downloadType: 'single'
+#     artifactName: 'drop'
+#     downloadPath: '$(System.ArtifactsDirectory)'
 
+stages:
+- stage: DeployToIIS
+  displayName: 'Deploy to IIS'
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy Job'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download artifact'
+      inputs:
+        buildType: 'specific'
+        project: 'MVC Agile Process'
+        pipeline: 'CI Pipeline'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
 
-- task: IISWebAppDeploymentOnMachineGroup@0
-  inputs:
-    WebSiteName: 'Mvc Movie'
-    Package: '$(System.ArtifactsDirectory)\**\*.zip'
+    - task: IISWebAppDeploymentOnMachineGroup@0
+      inputs:
+        WebSiteName: 'Mvc Movie'
+        Package: '$(System.ArtifactsDirectory)/**/*.zip'
