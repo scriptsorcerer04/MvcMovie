@@ -49,6 +49,7 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)\app_publish.zip'
     replaceExistingArchive: true
 
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
