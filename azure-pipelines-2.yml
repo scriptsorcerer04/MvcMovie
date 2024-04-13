@@ -41,9 +41,13 @@ steps:
 - task: DownloadBuildArtifacts@0
   displayName: 'Download artifact'
   inputs:
-    buildType: 'current'
+    buildType: current
+    pipeline: CI Pipeline
     downloadType: 'single'
     artifactName: 'drop'
     downloadPath: '$(System.ArtifactsDirectory)'
-    
+  
+ 
+
+
 
