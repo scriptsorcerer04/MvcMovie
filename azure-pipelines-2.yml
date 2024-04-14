@@ -50,16 +50,6 @@ stages:
     #   inputs:
     #       WebSiteName: 'MvcMovie'  
     #       Package: '$(System.ArtifactsDirectory)\**\*.zip'
-    - task: IISWebAppManagementOnMachineGroup@0
-      inputs:
-        EnableIIS: true
-        IISDeploymentType: 'IISWebsite'
-        ActionIISWebsite: 'CreateOrUpdateWebsite'
-        WebsiteName: 'MvcMovie'
-        WebsitePhysicalPath: '%SystemDrive%\inetpub\wwwroot'
-        WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'  
-        AppPoolNameForWebsite: 'MvcMovie'  
-
 
     - task: IISWebAppDeploymentOnMachineGroup@0
       inputs:
