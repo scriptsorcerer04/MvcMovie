@@ -57,6 +57,7 @@ stages:
       displayName: 'Deploying to IIS Web Server'
       continueOnError: true # This line ensures that the pipeline continues even if the deployment fails.
       timeoutInMinutes: 10 # Adjust the timeout as needed.
+      
 
     - script: |
         echo "Code has been deployed to the IIS web server successfully!"
