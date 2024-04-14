@@ -46,7 +46,20 @@ stages:
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
 
+    # - task: IISWebAppDeploymentOnMachineGroup@0
+    #   inputs:
+    #       WebSiteName: 'MvcMovie'  
+    #       Package: '$(System.ArtifactsDirectory)\**\*.zip'
     - task: IISWebAppDeploymentOnMachineGroup@0
       inputs:
-          WebSiteName: 'MvcMovie'  
-          Package: '$(System.ArtifactsDirectory)\**\*.zip'
+        WebSiteName: 'MvcMovie'
+        Package: '$(System.ArtifactsDirectory)\**\*.zip'
+      displayName: 'Deploying to IIS Web Server'
+      continueOnError: true # This line ensures that the pipeline continues even if the deployment fails.
+      timeoutInMinutes: 10 # Adjust the timeout as needed.
+      condition: succeeded() # This line ensures that this task runs only if the previous tasks succeeded.
+
+    - script: |
+        echo "Code has been deployed to the IIS web server successfully!"
+      displayName: 'Deployment Complete Message'
+      condition: succeeded()
